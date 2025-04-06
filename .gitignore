@@ -1,0 +1,24 @@
+*.log
+*.pyc
+build/
+install/
+log/
+*.so
+*.swp
+*.swo
+__pycache__/
+*.user
+*.db
+.DS_Store
+.deps/
+.colcon/
+*.bag
+*.launch.pyc
+# CMake
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CMakeCache.txt
+# Gazebo
+~/.gazebo/log/
+
