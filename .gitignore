@@ -199,3 +199,5 @@ venv.bak/
 autotest_result_*_junit.xml
 .python-version
  3c012218de5d218361b1977ba93633813e2cce11
+scripts/mav.tlog
+scripts/mav.tlog.raw
