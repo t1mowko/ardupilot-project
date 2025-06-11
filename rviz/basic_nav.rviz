@@ -1,0 +1,124 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+    Help Height: 78
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Status1
+      Splitter Ratio: 0.5
+    Tree Height: 464
+
+  - Class: rviz/Selection
+    Name: Selection
+
+  - Class: rviz/Tool Properties
+    Name: Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Splitter Ratio: 0.6
+
+  - Class: rviz/Views
+    Name: Views
+    Expanded:
+      - /Current View1
+    Splitter Ratio: 0.5
+
+  - Class: rviz/Time
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
+
+Visualization Manager:
+  Name: root
+  Enabled: true
+
+  Global Options:
+    Fixed Frame: map
+    Background Color: 48; 48; 48
+    Frame Rate: 30
+    Default Light: true
+
+  Displays:
+    - Name: Grid
+      Class: rviz/Grid
+      Enabled: true
+      Reference Frame: map
+      Plane: XY
+      Plane Cell Count: 10
+      Cell Size: 1
+      Color: 160; 160; 164
+      Alpha: 0.5
+
+    - Name: LaserScan
+      Class: rviz/LaserScan
+      Enabled: true
+      Topic: /scan
+      Reference Frame: lidar_link
+      Color: 255; 0; 0
+      Size (m): 0.05
+
+    - Name: Map
+      Class: rviz/Map
+      Enabled: true
+      Topic: /map
+      Reference Frame: map
+      Alpha: 1.0
+
+    - Name: TF
+      Class: rviz/TF
+      Enabled: true
+
+    - Name: Global Plan
+      Class: rviz/Path
+      Enabled: true
+      Topic: /move_base/NavfnROS/plan
+      Reference Frame: map
+      Color: 25; 255; 0
+
+    - Name: Local Plan
+      Class: rviz/Path
+      Enabled: true
+      Topic: /move_base/TrajectoryPlannerROS/local_plan
+      Reference Frame: map
+      Color: 255; 0; 0
+
+  Tools:
+    - Class: rviz/Interact
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Topic: /initialpose
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+
+  Views:
+    Current:
+      Name: Current View
+      Class: rviz/Orbit
+      Distance: 10
+      Focal Point: {X: 0, Y: 0, Z: 0}
+      Target Frame: map
+      Near Clip Distance: 0.01
+      Yaw: 0.785398
+      Pitch: 0.785398
+      Field of View: 0.785398
+    Saved: ~
+
+Window Geometry:
+  X: 60
+  Y: 60
+  Width: 1200
+  Height: 846
+  Displays: {collapsed: false}
+  Selection: {collapsed: false}
+  Tool Properties: {collapsed: false}
+  Views: {collapsed: false}
+  Time: {collapsed: false}

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Загрузка пустой карты -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find basic_nav)/maps/empty_map.yaml" output="screen">
+    <param name="frame_id" value="map"/>
+  </node>
+
+  <!-- Запуск AMCL для локализации -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame_id" value="base_link"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="initial_pose_x" value="0.0"/>
+    <param name="initial_pose_y" value="0.0"/>
+    <param name="initial_pose_a" value="0.0"/>
+  </node>
+
+  <!-- Запуск скрипта для исправления трансформаций -->
+  <node pkg="basic_nav" type="fix_transforms.py" name="transform_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="publish_rate" value="50.0"/>
+  </node>
+
+  <!-- Симуляция лидара -->
+  <node pkg="basic_nav" type="base_to_lidar.py" name="base_to_lidar" output="screen">
+    <param name="base_frame" value="base_link"/>
+    <param name="lidar_frame" value="laser"/>
+    <param name="publish_rate" value="50.0"/>
+  </node>
+
+  <!-- Публикация состояния робота -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="state_publisher" output="screen"/>
+
+  <!-- Исправление позиции робота на карте затрат -->
+  <node pkg="basic_nav" type="fix_costmap_position.py" name="costmap_position_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="use_map_center" value="true"/>
+    <param name="map_center_x" value="0.0"/>
+    <param name="map_center_y" value="0.0"/>
+    <param name="publish_rate" value="10.0"/>
+  </node>
+
+  <!-- Исправление целевых позиций -->
+  <node pkg="basic_nav" type="fix_goal_positions.py" name="goal_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="max_distance" value="50.0"/>
+  </node>
+
+  <!-- Запуск move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find basic_nav)/config/costmap_params.yaml" command="load" />
+    <rosparam file="$(find basic_nav)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find basic_nav)/config/recovery_behaviors.yaml" command="load" />
+    
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+    
+    <param name="controller_frequency" value="10.0"/>
+    <param name="controller_patience" value="15.0"/>
+    <param name="planner_frequency" value="5.0"/>
+    <param name="planner_patience" value="5.0"/>
+    <param name="oscillation_timeout" value="10.0"/>
+    <param name="oscillation_distance" value="0.2"/>
+    <param name="clearing_rotation_allowed" value="true"/>
+  </node>
+
+  <!-- Запуск скрипта для отладки карты затрат -->
+  <node pkg="basic_nav" type="debug_costmap_position.py" name="costmap_debugger" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="base_frame" value="base_link"/>
+  </node>
+
+  <!-- Генерация сетки для визуализации -->
+  <node pkg="basic_nav" type="grid_generator.py" name="grid_generator" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="grid_size" value="20"/>
+    <param name="cell_size" value="1.0"/>
+  </node>
+
+  <!-- RViz для визуализации -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find basic_nav)/rviz/navigation.rviz"/>
+</launch> 

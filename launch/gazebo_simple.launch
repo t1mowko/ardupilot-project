@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Параметры симуляции -->
+  <param name="use_sim_time" value="true"/>
+  
+  <!-- Запуск Gazebo с пустым миром -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+  
+  <!-- Загрузка URDF модели дрона -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find basic_nav)/urdf/drone_urdf.urdf'"/>
+  
+  <!-- Добавление модели дрона в Gazebo -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-urdf -model drone -param robot_description -x 0 -y 0 -z 0.1"/>
+  
+  <!-- Трансформации -->
+  <node pkg="tf" type="static_transform_publisher" name="base_to_lidar"
+        args="0 0 0.2 0 0 0 base_link lidar_link 100" />
+        
+  <!-- Добавление препятствий в Gazebo -->
+  <!-- Препятствие 1 - цилиндр -->
+  <node name="spawn_obstacle1" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-sdf -file $(find basic_nav)/models/cylinder.sdf -model obstacle1 -x 3 -y 0 -z 0"/>
+        
+  <!-- Препятствие 2 - цилиндр -->
+  <node name="spawn_obstacle2" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-sdf -file $(find basic_nav)/models/cylinder.sdf -model obstacle2 -x 5 -y 2 -z 0"/>
+        
+  <!-- Препятствие 3 - цилиндр -->
+  <node name="spawn_obstacle3" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-sdf -file $(find basic_nav)/models/cylinder.sdf -model obstacle3 -x 5 -y -2 -z 0"/>
+        
+  <!-- Препятствие 4 - стена -->
+  <node name="spawn_obstacle4" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-sdf -file $(find basic_nav)/models/wall.sdf -model obstacle4 -x 7 -y 0 -z 0"/>
+</launch> 

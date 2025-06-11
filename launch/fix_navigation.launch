@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Запуск скрипта для исправления трансформаций -->
+  <node pkg="basic_nav" type="fix_transforms.py" name="transform_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="publish_rate" value="50.0"/>
+  </node>
+  
+  <!-- Установка начальной позиции -->
+  <node pkg="basic_nav" type="set_initial_pose.py" name="set_initial_pose" output="screen">
+    <param name="map_center_x" value="0.0"/>
+    <param name="map_center_y" value="0.0"/>
+    <param name="initial_yaw" value="0.0"/>
+  </node>
+  
+  <!-- Установка глобального начала координат -->
+  <node pkg="basic_nav" type="fix_global_origin.py" name="global_origin_setter" output="screen">
+    <param name="latitude" value="55.751244"/>
+    <param name="longitude" value="37.618423"/>
+    <param name="altitude" value="0.0"/>
+  </node>
+  
+  <!-- Исправление целей вне карты -->
+  <node pkg="basic_nav" type="fix_goal_positions.py" name="goal_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="safety_margin" value="1.0"/>
+  </node>
+  
+  <!-- Исправление позиции робота на карте затрат -->
+  <node pkg="basic_nav" type="fix_costmap_position.py" name="costmap_position_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="use_map_center" value="true"/>
+    <param name="map_center_x" value="0.0"/>
+    <param name="map_center_y" value="0.0"/>
+  </node>
+  
+  <!-- Отладка карты затрат -->
+  <node pkg="basic_nav" type="debug_costmap_position.py" name="costmap_debugger" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="base_frame" value="base_link"/>
+  </node>
+</launch> 

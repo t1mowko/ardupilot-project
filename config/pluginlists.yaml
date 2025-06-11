@@ -1,0 +1,16 @@
+plugin_lists:
+  whitelist:
+    - sys_time
+    - local_position
+    - setpoint_velocity
+    - state
+    - rc_io
+    - mission
+    - param
+    - ftp
+    - global_position
+    - setpoint_position
+    - waypoint
+    - command
+    - sys_status
+    - tf

@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Параметры симуляции -->
+  <param name="use_sim_time" value="true"/>
+  
+  <!-- Количество дронов -->
+  <arg name="num_drones" default="5"/>
+  <arg name="takeoff_altitude" default="2.0"/>
+  
+  <!-- Запуск MAVROS для каждого дрона -->
+  <group ns="drone1">
+    <include file="$(find mavros)/launch/apm.launch">
+      <arg name="fcu_url" value="udp://:14551@127.0.0.1:14561"/>
+      <arg name="tgt_system" value="1"/>
+    </include>
+    
+    <!-- Трансформации для дрона 1 -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
+          args="0 0 0 0 0 0 map drone1/odom 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_to_lidar"
+          args="0 0 0.2 0 0 0 drone1/base_link drone1/lidar_link 100" />
+  </group>
+  
+  <group ns="drone2">
+    <include file="$(find mavros)/launch/apm.launch">
+      <arg name="fcu_url" value="udp://:14552@127.0.0.1:14562"/>
+      <arg name="tgt_system" value="2"/>
+    </include>
+    
+    <!-- Трансформации для дрона 2 -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
+          args="0 0 0 0 0 0 map drone2/odom 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_to_lidar"
+          args="0 0 0.2 0 0 0 drone2/base_link drone2/lidar_link 100" />
+  </group>
+  
+  <group ns="drone3">
+    <include file="$(find mavros)/launch/apm.launch">
+      <arg name="fcu_url" value="udp://:14553@127.0.0.1:14563"/>
+      <arg name="tgt_system" value="3"/>
+    </include>
+    
+    <!-- Трансформации для дрона 3 -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
+          args="0 0 0 0 0 0 map drone3/odom 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_to_lidar"
+          args="0 0 0.2 0 0 0 drone3/base_link drone3/lidar_link 100" />
+  </group>
+  
+  <group ns="drone4">
+    <include file="$(find mavros)/launch/apm.launch">
+      <arg name="fcu_url" value="udp://:14554@127.0.0.1:14564"/>
+      <arg name="tgt_system" value="4"/>
+    </include>
+    
+    <!-- Трансформации для дрона 4 -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
+          args="0 0 0 0 0 0 map drone4/odom 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_to_lidar"
+          args="0 0 0.2 0 0 0 drone4/base_link drone4/lidar_link 100" />
+  </group>
+  
+  <group ns="drone5">
+    <include file="$(find mavros)/launch/apm.launch">
+      <arg name="fcu_url" value="udp://:14555@127.0.0.1:14565"/>
+      <arg name="tgt_system" value="5"/>
+    </include>
+    
+    <!-- Трансформации для дрона 5 -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
+          args="0 0 0 0 0 0 map drone5/odom 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_to_lidar"
+          args="0 0 0.2 0 0 0 drone5/base_link drone5/lidar_link 100" />
+  </group>
+  
+  <!-- Запуск скрипта для исправления трансформаций -->
+  <node pkg="basic_nav" type="fix_transforms.py" name="transform_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="publish_rate" value="50.0"/>
+  </node>
+  
+  <!-- Запуск контроллера для управления несколькими дронами -->
+  <node pkg="basic_nav" type="multi_drone_controller.py" name="multi_drone_controller" output="screen">
+    <param name="num_drones" value="$(arg num_drones)"/>
+    <param name="takeoff_altitude" value="$(arg takeoff_altitude)"/>
+    <param name="arm_timeout" value="60.0"/>
+    <param name="command_rate" value="20.0"/>
+  </node>
+  
+  <!-- Запуск RViz для визуализации -->
+  <node pkg="rviz" type="rviz" name="rviz" 
+        args="-d $(find basic_nav)/rviz/navigation.rviz"/>
+</launch> 

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Запуск скрипта обхода препятствий -->
+    <node name="simple_obstacle_avoidance" pkg="basic_nav" type="simple_obstacle_avoidance.py" output="screen" />
+</launch> 

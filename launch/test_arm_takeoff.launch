@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Запуск MAVROS -->
+  <include file="$(find mavros)/launch/apm.launch">
+    <arg name="fcu_url" value="udp://:14550@" />
+  </include>
+  
+  <!-- Запуск скрипта для исправления трансформаций -->
+  <node pkg="basic_nav" type="fix_transforms.py" name="transform_fixer" output="screen">
+    <param name="map_frame" value="map"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="publish_rate" value="50.0"/>
+  </node>
+  
+  <!-- Запуск скрипта для тестирования армирования и взлета -->
+  <node pkg="basic_nav" type="test_arm_takeoff.py" name="arm_takeoff_tester" output="screen">
+    <param name="takeoff_altitude" value="2.0"/>
+  </node>
+</launch> 

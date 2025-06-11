@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>basic_nav</name>
+  <version>0.0.1</version>
+  <description>Basic navigation package</description>
+
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+
+</package>

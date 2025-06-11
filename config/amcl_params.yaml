@@ -1,0 +1,26 @@
+amcl:
+  min_particles: 100
+  max_particles: 5000
+  kld_err: 0.05
+  kld_z: 0.99
+  update_min_d: 0.2
+  update_min_a: 0.2
+  resample_interval: 1
+  transform_tolerance: 0.5
+  recovery_alpha_slow: 0.001
+  recovery_alpha_fast: 0.1
+  laser_min_range: 0.2
+  laser_max_range: 10.0
+
+  odom_frame_id: "odom"
+  base_frame_id: "base_link"
+  global_frame_id: "map"
+
+  gui_publish_rate: 10.0
+  save_pose_rate: 0.5
+  laser_lambda_short: 0.1
+  laser_model_type: "likelihood_field"
+  laser_z_hit: 0.85
+  laser_z_short: 0.1
+  laser_z_max: 0.05
+  laser_z_rand: 0.05

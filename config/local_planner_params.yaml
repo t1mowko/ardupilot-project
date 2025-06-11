@@ -1,0 +1,49 @@
+# Параметры локального планировщика для дрона
+local_planner:
+  # Основные параметры движения
+  max_linear_speed: 0.6        # м/с
+  max_angular_speed: 0.8       # рад/с
+  min_linear_speed: 0.1        # м/с
+  min_angular_speed: 0.1       # рад/с
+  
+  # Параметры обнаружения препятствий
+  obstacle_threshold: 1.2      # расстояние (м), на котором препятствие считается обнаруженным
+  safety_distance: 0.8         # минимальное безопасное расстояние до препятствия (м)
+  obstacle_memory_time: 2.0    # время "памяти" об обнаруженном препятствии (сек)
+  
+  # Параметры следования по пути
+  look_ahead_distance: 1.2     # расстояние (м) для выбора целевой точки на пути
+  goal_tolerance_xy: 0.2       # допустимое отклонение от цели по XY (м)
+  goal_tolerance_yaw: 0.1      # допустимое отклонение от цели по углу (рад)
+  
+  # Параметры избегания препятствий
+  use_vector_field: true       # использовать векторное поле для обхода препятствий
+  obstacle_avoidance_weight: 0.8   # вес алгоритма избегания препятствий (0-1)
+  path_following_weight: 0.5       # вес алгоритма следования по пути (0-1)
+  
+  # Параметры сглаживания движения
+  smoothing_factor: 0.3        # коэффициент сглаживания команд (0-1)
+  
+  # Параметры лидара для обнаружения препятствий
+  front_sector_angle: 90       # угол сектора перед дроном для обнаружения препятствий (градусы)
+  
+  # Параметры визуализации
+  debug_visualization: true    # включить визуализацию для отладки
+  
+  # Частота обновления плана
+  planning_frequency: 10.0     # Гц
+  
+  # Интеграция с MAVROS
+  use_mavros: true
+  mavros_local_pose_topic: "/mavros/local_position/pose"
+  mavros_setpoint_topic: "/mavros/setpoint_position/local"
+  
+  # Интеграция с move_base
+  use_move_base: true
+  global_plan_topic: "/move_base/NavfnROS/plan"
+  cmd_vel_topic: "/cmd_vel"
+  
+  # Дополнительные параметры для 3D навигации
+  altitude_control: true       # контроль высоты
+  default_altitude: 1.5        # стандартная высота полета (м)
+  altitude_tolerance: 0.2      # допустимое отклонение по высоте (м) 
